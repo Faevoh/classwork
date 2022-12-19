@@ -4,15 +4,15 @@ import { ballModel } from "../MODEL/model.js";
 export const newTeam = async(req,res)=>{
     const createTeam = await ballModel.create(req.body);
     const number = req.body.numberOfPlayers;
-    console.log(number)
-    if(number >= 22 && number >=25 ){
-        res.status(200).json({
-            message: "Wrong numberOfPlayers inserted"
-        });
-        }else{
-           res.status(200).json({
+    // console.log(number)
+    if(number >= 22 && number <=25 ){
+        res.status(404).json({
             message: "new player",
             data: createTeam
+        });
+        }else{
+           res.status(404).json({
+            message: "Wrong numberOfPlayers inserted"
            });
         }
 };
@@ -73,13 +73,15 @@ export const updateTeam =  async(req,res)=>{
             id: id
            }
         });
-        if(updatedTeam.length[0] === 0){
-            res.status(404).json({
-                message: " not updated",
+        const number = req.body.numberOfPlayers
+        console.log(number)
+        if(number >=22 && number <=25 && updatedTeam[0] === 0){
+            res.status(200).json({
+                message: " updated",
             });
         }else{
-            res.status(200).json({
-                message: "updated"
+            res.status(404).json({
+                message: "not updated and id doesnt exist"
             });    
         }
     }catch(error){
